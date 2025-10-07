@@ -17,12 +17,13 @@ class CustomerSeeder extends Seeder
 
         $customers = [];
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $customers[] = [
                 'name' => $faker->name(),
                 'email' => $faker->unique()->safeEmail(),
                 'phone' => $faker->phoneNumber(),
                 'address' => $faker->address(),
+                'image' => 'banker' . $faker->numberBetween(1, 10) . '.jpg' // concatination (sticking shit together)
             ];
         }
 

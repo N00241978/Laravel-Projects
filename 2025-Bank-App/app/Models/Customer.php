@@ -10,6 +10,7 @@ class Customer extends Model
         "name",
         "email",
         "phone",
-        "address"
+        "address",
+        "image"
     ];
 }
