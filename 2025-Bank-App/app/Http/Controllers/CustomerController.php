@@ -21,7 +21,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customer.create');
     }
 
     /**
@@ -29,7 +29,36 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        public function store(Request $request)
+        {
+            // Validate input
+            $request->validate([
+                'title' => 'required',
+                'description' => 'required|max:500',
+                'year' => 'required|integer',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            // Check if the image is uploaded and handle it
+            if ($request->hasFile('image')) {
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('images/books'), $imageName);
+            }
+
+            // Create a book record in the database
+            Book::create([
+                'title' => $request->title,
+                'description' => $request->description, // Fixed typo from 'descriptn'
+                'year' => $request->year,
+                'image' => $imageName, // Store the image URL in the DB
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            // Redirect to the index page with a success message
+            return to_route('books.index')->with('success', 'Book created successfully!');
+        }
+
     }
 
     /**
@@ -37,7 +66,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return view('customers.show')->with('customer', $customer); //fetches the customer and passes to view
     }
 
     /**

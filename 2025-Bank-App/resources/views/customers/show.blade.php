@@ -1,3 +1,4 @@
-<div>
-    <!-- It is never too late to be what you might have been. - George Eliot -->
-</div>
+<x-app-layout>
+    <x-customer-details :name="$customer->name" :email="$customer->email" :phone="$customer->phone"
+        :address="$customer->address" :image="$customer->image" />
+</x-app-layout>
