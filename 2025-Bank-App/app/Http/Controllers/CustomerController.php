@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
@@ -21,7 +22,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.create');
+        return view('customers.create');
     }
 
     /**
@@ -29,36 +30,32 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        public function store(Request $request)
-        {
-            // Validate input
-            $request->validate([
-                'title' => 'required',
-                'description' => 'required|max:500',
-                'year' => 'required|integer',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
+        // Validate input
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|max:500',
+            'phone' => 'required|string',
+            'address' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-            // Check if the image is uploaded and handle it
-            if ($request->hasFile('image')) {
-                $imageName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('images/books'), $imageName);
-            }
-
-            // Create a book record in the database
-            Book::create([
-                'title' => $request->title,
-                'description' => $request->description, // Fixed typo from 'descriptn'
-                'year' => $request->year,
-                'image' => $imageName, // Store the image URL in the DB
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
-            // Redirect to the index page with a success message
-            return to_route('books.index')->with('success', 'Book created successfully!');
+        // Check if the image is uploaded and handle it
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/books'), $imageName);
         }
 
+        // Create a book record in the database
+        Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'image' => $imageName, // Store the image URL in the DB
+            'address' => $request->address
+        ]);
+
+        // Redirect to the index page with a success message
+        return to_route('customers.index')->with('success', 'Customer created successfully! Yipeee!!');
     }
 
     /**
