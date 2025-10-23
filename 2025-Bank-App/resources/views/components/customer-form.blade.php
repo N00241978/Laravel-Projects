@@ -1,4 +1,4 @@
-@props (['action', 'method'])
+@props (['action', 'method', 'customer'])
 
 <form action="{{  $action }}" method="POST" enctype="multipart/form-data">
     @csrf
@@ -8,7 +8,7 @@
 
     <div class="mb-4">
         <label for="name" class="block text-sm text-gray-700">Name</label>
-        <input type="text" name="name" id="name" value="{{ old('name', $book->name ?? ' ') }}" required
+        <input type="text" name="name" id="name" value="{{ old('name', $customer->name ?? ' ') }}" required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
         @error('name')
             <p class="text-sm text-red-600">{{ $message }}</p>
@@ -17,7 +17,7 @@
 
     <div class="mb-4">
         <label for="email" class="block text-sm text-gray-700">Email</label>
-        <input type="text" name="email" id="email" value="{{ old('email', $book->email ?? ' ') }}" required
+        <input type="text" name="email" id="email" value="{{ old('email', $customer->email ?? ' ') }}" required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
         @error('email')
             <p class="text-sm text-red-600">{{ $message }}</p>
@@ -26,7 +26,7 @@
 
     <div class="mb-4">
         <label for="phone" class="block text-sm text-gray-700">Phone</label>
-        <input type="text" name="phone" id="phone" value="{{ old('phone', $book->phone ?? ' ') }}" required
+        <input type="text" name="phone" id="phone" value="{{ old('phone', $customer->phone ?? ' ') }}" required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
         @error('phone')
             <p class="text-sm text-red-600">{{ $message }}</p>
@@ -35,7 +35,7 @@
 
     <div class="mb-4">
         <label for="address" class="block text-sm text-gray-700">Address</label>
-        <input type="text" name="address" id="address" value="{{ old('address', $book->address ?? ' ') }}" required
+        <input type="text" name="address" id="address" value="{{ old('address', $customer->address ?? ' ') }}" required
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
         @error('address')
             <p class="text-sm text-red-600">{{ $message }}</p>

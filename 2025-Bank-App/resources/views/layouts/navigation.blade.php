@@ -21,6 +21,13 @@
                     <x-nav-link :href="route('customers.create')" :active="request()->routeIs('customers.create')">
                         {{ __('Create new Customer') }}
                     </x-nav-link>
+
+                    <!-- Admin Button -->
+                    @if(auth()->user()->role === 'admin')
+                        <x-nav-link :href="route('customers.create')" :active="request()->routeIs('customers.create')">
+                            {{ __('Create New Customers') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

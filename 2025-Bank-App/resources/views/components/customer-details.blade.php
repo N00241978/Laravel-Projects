@@ -5,8 +5,8 @@
         <div class="md:flex items-center p-10 space-y-6 md:space-y-0 md:space-x-10">
             {{-- Profile Image --}}
             @if ($image)
-                <img class="w-40 h-40 rounded-full object-cover border-4 border-indigo-500 shadow-md" src="{{ $image }}"
-                    alt="{{ $name }}">
+                <img class="w-40 h-40 rounded-full object-cover border-4 border-indigo-500 shadow-md"
+                    src="{{ asset("images/customers/" . $image) }}" alt="{{ $name }}">
             @else
                 <div
                     class="w-40 h-40 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-4xl font-bold border-4 border-indigo-500 shadow-md">

@@ -11,9 +11,21 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all(); //fetch all customer
+
+        // Get the search input
+        $search = $request->input('search');
+
+        // Fetch all customers from the database
+        if ($search) {
+            $customers = Customer::where('name', 'like', "%{$search}%")
+                ->get();
+        } else {
+            $customers = Customer::all();
+        }
+
+        // Send the customers to the index view
         return view('customers.index', compact('customers'));
     }
 
@@ -42,7 +54,7 @@ class CustomerController extends Controller
         // Check if the image is uploaded and handle it
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/books'), $imageName);
+            $request->image->move(public_path('images/customers'), $imageName);
         }
 
         // Create a book record in the database
@@ -71,7 +83,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view('customers.edit')->with('customer', $customer);
     }
 
     /**
@@ -79,7 +91,31 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        // Validate input
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|max:500',
+            'phone' => 'required|string',
+            'address' => 'required',
+        ]);
+
+        // Check if the image is uploaded and handle it
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/customers'), $imageName);
+        }
+
+        // Create a book record in the database
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'image' => $imageName ?? $customer->image,
+            'address' => $request->address
+        ]);
+
+        // Redirect to the index page with a success message
+        return to_route('customers.index')->with('success', 'Customer created successfully! Yipeee!!');
     }
 
     /**
@@ -87,6 +123,8 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        Customer::where('id', $customer->id)->delete();
+
+        return to_route('customers.index')->with('success', 'Customer was deleted successfully');
     }
 }
