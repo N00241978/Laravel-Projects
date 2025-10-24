@@ -38,28 +38,30 @@
                                 </a>
 
                                 <!-- Edit and Delete Buttons -->
-                                <div class="mt-4 flex justify-between">
+                                @if(auth()->user()->role === 'admin')
+                                    <div class="mt-4 flex justify-between">
 
-                                    <!-- Edit Button route to customers.edit and receives $customer for editing -->
-                                    <a href="{{ route('customers.edit', $customer) }}"
-                                        class="inline-block bg-sky-400 text-white font-semibold py-2 px-4 rounded-md shadow 
-                                                                                                                              hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 transition-colors duration-200">
-                                        Edit
-                                    </a>
+                                        <!-- Edit Button route to customers.edit and receives $customer for editing -->
+                                        <a href="{{ route('customers.edit', $customer) }}"
+                                            class="inline-block bg-sky-400 text-white font-semibold py-2 px-4 rounded-md shadow 
+                                                                                                                                                hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 transition-colors duration-200">
+                                            Edit
+                                        </a>
 
-                                    <!-- Delete Button (you need a form to send DELETE requests) -->
-                                    <form action="{{ route('customers.destroy', $customer) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="inline-block bg-gray-400 text-white font-semibold py-2 px-4 rounded-md shadow 
-                                                                                                                                   hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 transition-colors duration-200">
-                                            Delete
-                                        </button>
-                                    </form>
+                                        <!-- Delete Button (you need a form to send DELETE requests) -->
+                                        <form action="{{ route('customers.destroy', $customer) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="inline-block bg-gray-400 text-white font-semibold py-2 px-4 rounded-md shadow 
+                                                                                                                                                    hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 transition-colors duration-200">
+                                                Delete
+                                            </button>
+                                        </form>
 
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     </div>
