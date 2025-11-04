@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,11 +19,13 @@ class CustomerController extends Controller
 
         // Fetch all customers from the database
         if ($search) {
-            $customers = Customer::where('name', 'like', "%{$search}%")
+            $customers = User::where('role', 'customer')
+                ->where('name', 'like', "%{$search}%")
                 ->get();
         } else {
-            $customers = Customer::all();
+            $customers = User::where('role', 'customer')->get();
         }
+
 
         // Send the customers to the index view
         return view('customers.index', compact('customers'));
@@ -58,12 +60,13 @@ class CustomerController extends Controller
         }
 
         // Create a book record in the database
-        Customer::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'image' => $imageName, // Store the image URL in the DB
-            'address' => $request->address
+            'address' => $request->address,
+            'role' => "customer"
         ]);
 
         // Redirect to the index page with a success message
@@ -73,7 +76,7 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(User $customer)
     {
         return view('customers.show')->with('customer', $customer); //fetches the customer and passes to view
     }
@@ -81,7 +84,7 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Customer $customer)
+    public function edit(User $customer)
     {
         return view('customers.edit')->with('customer', $customer);
     }
@@ -89,7 +92,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, User $customer)
     {
         // Validate input
         $request->validate([
@@ -121,9 +124,9 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy(User $customer)
     {
-        Customer::where('id', $customer->id)->delete();
+        User::where('id', $customer->id)->delete();
 
         return to_route('customers.index')->with('success', 'Customer was deleted successfully');
     }

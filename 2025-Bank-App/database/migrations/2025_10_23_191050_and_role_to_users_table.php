@@ -12,6 +12,9 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('role')->default('user'); // user is default 
+            $table->string('image')->default('placeholder.jpg');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
         });
     }
 
