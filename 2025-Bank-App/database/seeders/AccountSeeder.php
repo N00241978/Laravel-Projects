@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Account;
+use App\Models\User;
 
 use Faker\Factory as Faker;
 
@@ -18,17 +19,18 @@ class AccountSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $accounts = [];
         $account_status = ['Open', 'Closed', 'Frozen'];
 
         for ($i = 0; $i < 50; $i++) {
-            $accounts[] = [
+            $account = Account::create([
                 'balance' => $faker->numberBetween(-1000, 100000),
                 'date_opened' => $faker->dateTime(),
                 'account_status' => $faker->randomElement($account_status)
-            ];
-        }
+            ]);
 
-        Account::insert($accounts);
+            $accountUsers = User::inRandomOrder()->take($faker->numberBetween(1, 3))->pluck('id');
+
+            $account->users()->attach($accountUsers);
+        }
     }
 }
