@@ -78,7 +78,8 @@ class CustomerController extends Controller
      */
     public function show(User $customer)
     {
-        return view('customers.show')->with('customer', $customer); //fetches the customer and passes to view
+        $accounts = $customer->accounts;
+        return view('customers.show')->with('customer', $customer)->with('accounts', $accounts); //fetches the customer and passes to view
     }
 
     /**

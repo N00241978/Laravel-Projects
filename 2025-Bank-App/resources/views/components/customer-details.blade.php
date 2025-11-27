@@ -1,8 +1,8 @@
-@props(['name', 'email', 'phone', 'address', 'image'])
+@props(['name', 'email', 'phone', 'address', 'image', 'accounts'])
 
 <div class="min-h-screen bg-gray-100 flex items-center justify-center px-4">
     <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="md:flex items-center p-10 space-y-6 md:space-y-0 md:space-x-10">
+        <div class="md:flex items-start p-10 space-y-6 md:space-y-0 md:space-x-10">
             {{-- Profile Image --}}
             @if ($image)
                 <img class="w-40 h-40 rounded-full object-cover border-4 border-indigo-500 shadow-md"
@@ -20,7 +20,15 @@
                 <p class="mt-2 text-lg text-gray-600"><strong>Email:</strong> {{ $email }}</p>
                 <p class="mt-1 text-lg text-gray-600"><strong>Phone:</strong> {{ $phone }}</p>
                 <p class="mt-1 text-lg text-gray-600"><strong>Address:</strong> {{ $address }}</p>
+
+                <div class="flex flex-col gap-5 mt-5">
+                    @foreach ($accounts as $account)
+                        <x-account-card :account='$account' />
+
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
+
 </div>
