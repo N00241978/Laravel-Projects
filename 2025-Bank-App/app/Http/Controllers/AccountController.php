@@ -37,7 +37,8 @@ class AccountController extends Controller
 
     public function show(Account $account)
     {
-        return view('accounts.show')->with('account', $account);
+        $customers = $account->customers;
+        return view('accounts.show')->with('account', $account)->with('customers', $customers);
     }
 
     /**

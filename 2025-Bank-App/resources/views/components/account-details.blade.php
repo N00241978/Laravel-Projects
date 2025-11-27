@@ -13,4 +13,5 @@
             <p class="text-xl text-gray-800">Account Status: {{ $account->account_status }}</p>
         </div>
     </div>
+
 </div>

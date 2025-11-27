@@ -11,7 +11,7 @@ class Account extends Model
     protected $fillable = ['balance', 'date_opened', 'account_status'];
 
     // account can have many users
-    public function users()
+    public function customers()
     {
         return $this->belongsToMany(User::class);
     }
