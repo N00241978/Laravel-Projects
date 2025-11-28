@@ -46,7 +46,7 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        //
+        return view('accounts.edit')->with('account', $account);
     }
 
     /**

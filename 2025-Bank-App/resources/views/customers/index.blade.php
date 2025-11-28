@@ -33,8 +33,7 @@
                         @foreach ($customers as $customer)
                             <div class="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
                                 <a href="{{ route('customers.show', $customer) }}">
-                                    <x-customer-card :name="$customer->name" :email="$customer->email"
-                                        :phone="$customer->phone" :address="$customer->address" :image="$customer->image" />
+                                    <x-customer-card :customer="$customer" />
                                 </a>
 
                                 <!-- Edit and Delete Buttons -->
@@ -44,7 +43,7 @@
                                         <!-- Edit Button route to customers.edit and receives $customer for editing -->
                                         <a href="{{ route('customers.edit', $customer) }}"
                                             class="inline-block bg-sky-400 text-white font-semibold py-2 px-4 rounded-md shadow 
-                                                                                                                                                hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 transition-colors duration-200">
+                                                                                                                                                        hover:bg-sky-600 focus:ring-2 focus:ring-sky-400 transition-colors duration-200">
                                             Edit
                                         </a>
 
@@ -55,7 +54,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="inline-block bg-gray-400 text-white font-semibold py-2 px-4 rounded-md shadow 
-                                                                                                                                                    hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 transition-colors duration-200">
+                                                                                                                                                            hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 transition-colors duration-200">
                                                 Delete
                                             </button>
                                         </form>

@@ -59,7 +59,7 @@
 
     <div>
         <x-primary-button>
-            {{ isset($book) ? 'Update Customer' : 'Add Customer' }}
+            {{ isset($customer) ? 'Update Customer' : 'Add Customer' }}
         </x-primary-button>
     </div>
 </form>
