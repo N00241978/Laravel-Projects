@@ -20,17 +20,34 @@ class TransactionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Account $account)
     {
-        //
+        return view('transactions.create', compact('account'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Account $account, Request $request)
     {
-        //
+        // Validate input
+        $request->validate([
+            'title' => 'required',
+            'amount' => 'required|max:500',
+        ]);
+
+        $account->transactions()->create([
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'old_balance' => $account->balance,
+            'new_balance' => $account->balance + $request->amount
+        ]);
+
+        $account->update(['balance' => $account->balance + $request->amount]);
+
+
+        // Redirect to the index page with a success message
+        return to_route('accounts.show', $account)->with('success', 'Customer created successfully! Yipeee!!');
     }
 
     /**

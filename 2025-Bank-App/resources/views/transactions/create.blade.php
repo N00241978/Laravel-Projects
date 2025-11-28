@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <h3 class="font-semibold text-lg mb-4">Add a New Transaction</h3>
 
-                    <x-transaction-form :action="route('transactions.store')" :method="'POST'" />
+                    <x-transaction-form :action="route('accounts.transactions.store', $account)" :method="'POST'" />
 
                 </div>
             </div>
