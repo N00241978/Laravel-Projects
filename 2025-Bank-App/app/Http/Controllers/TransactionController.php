@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
+use App\Models\Account;
+
 class TransactionController extends Controller
 {
     /**
@@ -44,7 +46,7 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        return view('transaction.edit')->with('transaction', $transaction);
     }
 
     /**
@@ -52,14 +54,33 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        //
+        // Validate input
+        $request->validate([
+            'title' => 'required',
+            'amount' => 'required',
+            'old_balance' => 'required',
+            'new_balance' => 'required'
+        ]);
+
+        // Create an transaction record in the database
+        $transaction->update([
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'old_balance' => $request->old_balance,
+            'new_balance' => $request->new_balance
+        ]);
+
+        // Redirect to the index page with a success message
+        return to_route('accounts.transactions.show', [$transaction->account, $transaction])->with('success', 'Transaction created successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Account $account, Transaction $transaction)
     {
-        //
+        Transaction::where('id', $transaction->id)->delete();
+
+        return to_route('accounts.show', $account)->with('success', 'Transaction was deleted successfully');
     }
 }
