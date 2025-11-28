@@ -10,9 +10,21 @@ class AccountController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // Get the search input
+        $search = $request->input('search');
+
+        // Fetch all accounts from the database
+        if ($search) {
+            $accounts = Account::where('id', 'like', "%{$search}%")
+                ->get();
+        } else {
+            $accounts = Account::all();
+        }
+
+
+        return view('accounts.index', compact('accounts'));
     }
 
     /**
@@ -54,7 +66,22 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        // Validate input
+        $request->validate([
+            'balance' => 'required|decimal:2',
+            'date_opened' => 'required|date',
+            'account_status' => 'required'
+        ]);
+
+        // Create an account record in the database
+        $account->update([
+            'balance' => $request->balance,
+            'date_opened' => $request->date_opened,
+            'account_status' => $request->account_status,
+        ]);
+
+        // Redirect to the index page with a success message
+        return to_route('accounts.show', $account)->with('success', 'Account created successfully!');
     }
 
     /**
