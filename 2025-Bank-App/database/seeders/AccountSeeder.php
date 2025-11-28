@@ -30,7 +30,7 @@ class AccountSeeder extends Seeder
 
             $accountUsers = User::inRandomOrder()->take($faker->numberBetween(1, 3))->pluck('id');
 
-            $account->users()->attach($accountUsers);
+            $account->customers()->attach($accountUsers);
         }
     }
 }
