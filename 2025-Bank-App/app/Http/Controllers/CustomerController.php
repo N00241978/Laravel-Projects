@@ -6,11 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Hash;
+
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
 
@@ -19,11 +19,11 @@ class CustomerController extends Controller
 
         // Fetch all customers from the database
         if ($search) {
-            $customers = User::where('role', 'customer')
+            $customers = User::where('role', 'customer')    // Finds by name
                 ->where('name', 'like', "%{$search}%")
                 ->get();
         } else {
-            $customers = User::where('role', 'customer')->get();
+            $customers = User::where('role', 'customer')->get();  // Finds only the customers
         }
 
 
@@ -31,20 +31,16 @@ class CustomerController extends Controller
         return view('customers.index', compact('customers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Shows the customer create form
     public function create()
     {
         return view('customers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        // Validate input
+        // Validate the form data
         $request->validate([
             'name' => 'required',
             'email' => 'required|max:500',
@@ -59,40 +55,37 @@ class CustomerController extends Controller
             $request->image->move(public_path('images/customers'), $imageName);
         }
 
-        // Create a book record in the database
+        // Create a new customer record in the database
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'image' => $imageName, // Store the image URL in the DB
             'address' => $request->address,
-            'role' => "customer"
+            'role' => "customer",
+            'password' => Hash::make($request->password),  // Hash the password
+
         ]);
 
         // Redirect to the index page with a success message
         return to_route('customers.index')->with('success', 'Customer created successfully! Yipeee!!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+    // Display specific customer
     public function show(User $customer)
     {
         $accounts = $customer->accounts;
         return view('customers.show')->with('customer', $customer)->with('accounts', $accounts); //fetches the customer and passes to view
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Show editing form
     public function edit(User $customer)
     {
         return view('customers.edit')->with('customer', $customer);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // update current customer record
     public function update(Request $request, User $customer)
     {
         // Validate input
@@ -109,7 +102,7 @@ class CustomerController extends Controller
             $request->image->move(public_path('images/customers'), $imageName);
         }
 
-        // Create a book record in the database
+        // Create a record in the database
         $customer->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -119,12 +112,10 @@ class CustomerController extends Controller
         ]);
 
         // Redirect to the index page with a success message
-        return to_route('customers.index')->with('success', 'Customer created successfully! Yipeee!!');
+        return to_route('customers.index')->with('success', 'Customer updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Delete a customer from the database
     public function destroy(User $customer)
     {
         User::where('id', $customer->id)->delete();
